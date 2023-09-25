@@ -1,55 +1,91 @@
 import java.util.Scanner;
 
 public class atm {
-    public static void main(String[] args) {
-        Scanner input = new Scanner(System.in);
-        int balance = 100000;
-        while (true) {
-            System.out.println("===================================================");
-            System.out.println("Automated Teller Machine");
-            System.out.println("===================================================");
-            System.out.println("Choose 1 for Withdraw");
-            System.out.println("Choose 2 for Deposit");
-            System.out.println("Choose 3 for Check Balance");
-            System.out.println("Choose 4 for EXIT");
-            System.out.println("--------------------------------");
+    private String accountHolder;
+    private int accountNumber;
+    private static double balance;
+    public atm(String accountHolder, int accountNumber, double initialBalance){
+        this.accountHolder = accountHolder;
+        this.accountNumber = accountNumber;
+        this.balance = initialBalance;
+    }
+    public void display(){
+        System.out.println("Account Holder :" + this.accountHolder);
+        System.out.println("Account Number :" + this.accountNumber);
+        System.out.println("Initial Balance :" + this.balance);
+    }
+    public static double getBalance() {
+        return balance;
+    }
+    
+    public static void deposit(double amount) {
+        balance += amount;
+    }
+    
+    public static boolean withdraw(double amount) {
+        if (amount <= balance) {
+            balance -= amount;
+            return true;
+        }
+        return false;
+    }
 
-            System.out.print("Choose the operation you want to perform:");
-            int choice = input.nextInt();
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Enter your Name :");
+        String accountHolder = sc.nextLine();
+        System.out.println("Enter account number :");
+        int accountNumber = sc.nextInt();
+        System.out.println("Enter Initial Balance :");
+        double initialBalance = sc.nextDouble();
+        System.out.println();
+        System.out.println("Displaying Account Details :");
+        new atm(accountHolder, accountNumber, initialBalance).display();
+        System.out.println();
+        
+        while (true) {
+            System.out.println("ATM Interface");
+            System.out.println();
+            System.out.println("1. Check Balance");
+            System.out.println("2. Deposit");
+            System.out.println("3. Withdraw");
+            System.out.println("4. Exit");
+            System.out.println();
+            System.out.print("Select an option: ");
+            
+            int choice = sc.nextInt();
+            
             switch (choice) {
                 case 1:
-                    System.out.print("Enter money to be withdrawn:");
-                    int withdraw = input.nextInt();
-                    if (balance >= withdraw) {
-                        balance -= withdraw;
-                        System.out.println("Please collect your money");
-                        System.out.println("--------------------------------");
-                        System.out.println("--------------------------------");
-
-
+                    System.out.println("Current Balance: " + atm.getBalance()+"/-");
+                    break;
+                    
+                case 2:
+                    System.out.print("Enter the amount to deposit: ");
+                    double depositAmount = sc.nextDouble();
+                    atm.deposit(depositAmount);
+                    System.out.println("Deposit successful. Current Balance: " + atm.getBalance()+"/-");
+                    break;
+                    
+                case 3:
+                    System.out.print("Enter the amount to withdraw: ");
+                    double withdrawAmount = sc.nextDouble();
+                    boolean success = atm.withdraw(withdrawAmount);
+                    if (success) {
+                        System.out.println("Withdrawal successful. Current Balance: " + atm.getBalance()+"/-");
                     } else {
-                        System.out.println("Insufficient Balance");
-                        System.out.println("--------------------------------");
-                        System.out.println("--------------------------------");
+                        System.out.println("Insufficient funds. Current Balance: " + atm.getBalance()+"/-");
                     }
                     break;
-                case 2:
-                    System.out.print("Enter money to be deposited:");
-                    int deposit = input.nextInt();
-                    balance += deposit;
-                    System.out.println("Your Money has been successfully deposited");
-                    System.out.println("--------------------------------");
-                    System.out.println("--------------------------------");
-                    break;
-                case 3:
-                    System.out.println("Balance : " + balance);
-                    System.out.println("--------------------------------");
-                    System.out.println("--------------------------------");
-                    break;
+                    
                 case 4:
+                    System.out.println("Exiting ATM. Thank you!");
+                    sc.close();
                     System.exit(0);
+                    
                 default:
-                    System.out.println("Invalid choice");
+                    System.out.println("Invalid option. Please select a valid option.");
+                    break;
             }
         }
     }
