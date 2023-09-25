@@ -1,5 +1,3 @@
-package CODSOFT;
-
 import java.util.*;
 
 class OP {
@@ -42,7 +40,7 @@ class OP {
         System.out.println("You took " + this.noOfGuess + " guesses!!");
     }
 }
-public class task1 {
+public class guessgame {
     public static void main(String[] args) {
         OP task1 = new OP();
         task1.takeInput();
